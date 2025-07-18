@@ -5,12 +5,19 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "vitest"
   },
-  "keywords": ["css", "parser", "typescript", "lightweight"],
+  "keywords": [
+    "css",
+    "parser",
+    "typescript",
+    "lightweight"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "vitest": "^3.2.4"
   }
 }
