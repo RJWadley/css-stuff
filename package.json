@@ -1,0 +1,16 @@
+{
+  "name": "css-to-object",
+  "version": "1.0.0",
+  "description": "Lightweight TypeScript utility to convert CSS strings to objects",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": ["css", "parser", "typescript", "lightweight"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
