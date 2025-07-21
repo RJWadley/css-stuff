@@ -4,6 +4,25 @@ export type CSSObject = {
 
 const toCamelCase = (s: string) => s.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
 
+function mergeCssObjects(target: CSSObject, source: CSSObject) {
+  for (const key in source) {
+    if (Object.prototype.hasOwnProperty.call(source, key)) {
+      if (
+        typeof source[key] === 'object' &&
+        source[key] !== null &&
+        !Array.isArray(source[key]) &&
+        target[key] &&
+        typeof target[key] === 'object'
+      ) {
+        target[key] = mergeCssObjects(target[key] as CSSObject, source[key] as CSSObject);
+      } else {
+        target[key] = source[key];
+      }
+    }
+  }
+  return target;
+}
+
 function parseCss(css: string): CSSObject {
   const r: CSSObject = {};
   css = css.replace(/\/\*[\s\S]*?\*\//g, '').trim();
@@ -59,25 +78,25 @@ function parseCss(css: string): CSSObject {
 }
 
 export function css(template: TemplateStringsArray, ...substitutions: any[]): CSSObject {
-  const o2c = (o: CSSObject): string => {
-    let c = '';
-    for (const k in o) {
-      const v = o[k];
-      if (typeof v === 'object' && v !== null) c += `${k}{${o2c(v as CSSObject)}}`;
-      else c += `${k.replace(/[A-Z]/g, m => `-${m.toLowerCase()}`)}:${v};`;
+  let s = template[0];
+  let result: CSSObject = {};
+  for (let i = 0; i < substitutions.length; i++) {
+    const sub = substitutions[i];
+    if (typeof sub === 'object' && sub !== null) {
+      const o = parseCss(s);
+      result = mergeCssObjects(result, o);
+      const lastKey = Object.keys(result).pop();
+      if (lastKey) {
+        result[lastKey] = mergeCssObjects(result[lastKey] as CSSObject, sub);
+      }
+      s = '';
+    } else {
+      s += String(sub);
     }
-    return c;
-  };
-  let s = '';
-  for (let i = 0; i < template.length; i++) {
-    s += template[i];
-    if (i < substitutions.length) {
-      const sub = substitutions[i];
-      if (typeof sub === 'object' && sub !== null) s += o2c(sub as CSSObject);
-      else s += String(sub);
-    }
+    s += template[i + 1];
   }
-  return parseCss(s);
+  result = mergeCssObjects(result, parseCss(s));
+  return result;
 }
 
 export const cssToObject = (cssString: string) => parseCss(cssString);
