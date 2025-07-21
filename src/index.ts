@@ -6,7 +6,7 @@ const toCamelCase = (s: string) => s.replace(/-([a-z])/g, (_, c) => c.toUpperCas
 
 function parseCss(css: string): CSSObject {
   const r: CSSObject = {};
-  css = css.trim();
+  css = css.replace(/\/\*[\s\S]*?\*\//g, '').trim();
   
   let i = 0;
   while (i < css.length) {
