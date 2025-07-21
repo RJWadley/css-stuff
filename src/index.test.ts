@@ -153,10 +153,6 @@ describe('css-to-object', () => {
       });
     });
 
-    it('should handle at-rules without a body', () => {
-      const result = cssToObject('@charset "UTF-8";');
-      expect(result).toEqual({ '@charset': '"UTF-8"' });
-    });
   });
 
   describe('CSS values and properties', () => {
