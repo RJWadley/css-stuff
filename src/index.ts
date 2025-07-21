@@ -18,7 +18,7 @@ function parseCss(css: string): CSSObject {
     while (i < css.length) {
       const c = css[i];
       if (c === '{') break;
-      if (c === ':' && braceLevel === 0) { hasColon = true; break; }
+      if (c === ':' && braceLevel === 0 && /\s/.test(css[i+1] ?? '')) { hasColon = true; break; }
       if (c === ';' && braceLevel === 0) break;
       if (c === '(') braceLevel++;
       if (c === ')') braceLevel--;
