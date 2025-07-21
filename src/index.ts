@@ -39,7 +39,13 @@ function parseCss(css: string): CSSObject {
     } else if (hasColon) {
       i++;
       let valueStart = i;
-      while (i < css.length && css[i] !== ';') i++;
+      let braceLevel = 0;
+      while (i < css.length) {
+        if (css[i] === '(') braceLevel++;
+        else if (css[i] === ')') braceLevel--;
+        else if (css[i] === ';' && braceLevel === 0) break;
+        i++;
+      }
       const value = css.slice(valueStart, i).trim();
       if (before && value) r[toCamelCase(before)] = value;
       if (css[i] === ';') i++;

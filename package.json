@@ -6,7 +6,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "test": "vitest"
+    "test": "vitest",
+    "size": "gzip -c dist/index.js | wc -c"
   },
   "keywords": [
     "css",
